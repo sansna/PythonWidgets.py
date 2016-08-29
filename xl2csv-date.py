@@ -1,10 +1,11 @@
 #! /usr/bin/python3
 import xlrd
 from datetime import datetime
-book = xlrd.open_workbook("buf.xlsx")
+import sys
+book = xlrd.open_workbook(sys.argv[1])
 print(book)
 sh = book.sheet_by_index(0)
-f = open('buf.csv','w')
+f = open(sys.argv[2],'w')
 for rx in range(sh.nrows):
     for cx in range(sh.ncols):
         if cx != 0:
