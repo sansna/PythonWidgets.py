@@ -18,3 +18,11 @@ ifaces
 #+ do not have arg iface.. It said send() is used to send layer 3 pkts. and
 #+ sendp is used to send layer 2 pkts.
 sendp(arppkt,iface="ens2f0") #In linux, using sendp()..
+
+# Test empty packet sending
+sendp(Ether()/IP(),iface="ens2f0")
+
+# Self construct packet and send
+a=IP(dst="10.0.2.2",src="10.0.2.3",ttl=10)
+b=Ether(dst="00:00:00:00:00:01")
+sendp(b/a,iface="ens2f0")
