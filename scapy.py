@@ -24,5 +24,5 @@ sendp(Ether()/IP(),iface="ens2f0")
 
 # Self construct packet and send
 a=IP(dst="10.0.2.2",src="10.0.2.3",ttl=10)
-b=Ether(dst="00:00:00:00:00:01")
-sendp(b/a,iface="ens2f0")
+b=Ether(dst="00:0c:29:17:06:8e",src="00:50:56:37:28:b9",type=0x0800)
+sendp(b/a,iface="eno50336512")
