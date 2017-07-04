@@ -22,7 +22,9 @@ sendp(arppkt,iface="ens2f0") #In linux, using sendp()..
 # Test empty packet sending
 sendp(Ether()/IP(),iface="ens2f0")
 
-# Self construct packet and send
-a=IP(dst="10.0.2.2",src="10.0.2.3",ttl=10)
+# Self construct IP packet and send
 b=Ether(dst="00:0c:29:17:06:8e",src="00:50:56:37:28:b9",type=0x0800)
+a=IP(dst="10.0.2.2",src="10.0.2.3",ttl=10)
 sendp(b/a,iface="eno50336512")
+# Send 80 len IP pkt, Eth/IP len = 34 Byte
+sendp(b/a/Raw(RandString(size=46)),iface="eno50336512")
