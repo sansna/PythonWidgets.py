@@ -6,8 +6,10 @@ import argparse
 p = argparse.ArgumentParser(conflict_handler='resolve')
 p.add_argument("-h", type=str, default='172.16.2.157', help='mgodb host')
 p.add_argument("-p", type=int, default=27047, help='mgodb port')
-p.add_argument("-c", type=int, default=0, help='after ct')
-p.add_argument("-u", type=int, default=0, help='after ut')
+p.add_argument("-cg", type=int, default=0, help='after ct')
+p.add_argument("-ug", type=int, default=0, help='after ut')
+p.add_argument("-cl", type=int, default=0, help='before ct')
+p.add_argument("-ul", type=int, default=0, help='before ut')
 p.add_argument("-n", type=int, default=None, help='dump limit')
 args = p.parse_args()
 
@@ -16,7 +18,7 @@ conn = pymongo.MongoClient(host=args.h, port=args.p, read_preference=pymongo.rea
 t = conn['record']['record_square']
 
 cnt = 0
-for i in t.find({"$and":[{"ut":{"$gt":args.u}},{"ct":{"$gt":args.c}}]}):
+for i in t.find({"$and":[{"ut":{"$gt":args.ug}},{"ct":{"$gt":args.cg}},{"ut":{"$lt":args.ul}},{"ct":{"$lt":args.cl}}]}):
     t.find
     if args.n != None and cnt >= args.n:
         break
@@ -24,5 +26,5 @@ for i in t.find({"$and":[{"ut":{"$gt":args.u}},{"ct":{"$gt":args.c}}]}):
     if cnt % 1000 == 0:
         sys.stderr.write('lines: %d\n' % cnt)
 
-    print(i.get('_id', 0), i.get('mid', 0), i.get('tid', 0), i.get('ct', 0), i.get('ut', 0), i.get('status', 0), i.get('score', 0.0), i.get('targer_disp_count', 0))
+    print(i.get('_id', 0), i.get('mid', 0), i.get('tid', 0), i.get('ct', 0), i.get('ut', 0), i.get('status', 0), i.get('score', 0.0), i.get('targer_disp_count', 0), i.get('stat', 'none'))
     sys.stdout.flush()
