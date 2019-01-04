@@ -6,6 +6,7 @@ import math
 
 c = redis.StrictRedis(host='r-uf6db21c0dd00ee4.redis.rds.aliyuncs.com', password='')
 
+size = 0
 cursor = 0
 while True:
     r = c.zscan('record_rds_all_score', cursor=cursor)
@@ -14,6 +15,8 @@ while True:
         info = c.get('adm_record_score_%s' % pid)
         if info == None:
             continue
+        s = c.execute_command("memory usage adm_record_score_%s"%pid)
+        size = size + s
         info = json.loads(info)
         disp = info.get('v',0)
         view = info.get('detail',0)
@@ -35,3 +38,4 @@ while True:
         cursor = r[0]
         if cursor == 0:
             break
+print size/1024/1024,"MB"
