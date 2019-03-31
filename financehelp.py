@@ -9,7 +9,7 @@ def financehelpyear():
     rate = float(input("What is rate?\n"))
 
     sum = 0.0
-    for i in range(1,20):
+    for i in range(1,30):
         sum = (sum+yearly)*(1+rate)
         print("At year "+str(i)+" I can gain "+str(sum)+" money.")
 
@@ -18,7 +18,7 @@ def financehelpmonth():
     ratemonth=float(input("What is ratemonth?\n"))
 
     sum=0.0
-    for i in range(0,20):
+    for i in range(0,30):
         for j in range(0,11):
             sum = (sum+monthly)*(1+ratemonth)
         print("At year "+str(i)+" I earned "+str(sum)+" money.")
