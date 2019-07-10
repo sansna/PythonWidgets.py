@@ -1,3 +1,4 @@
+# this web server is only for test use
 from bottle import route, run, template
 @route('/<first>/<name>')
 def index(name,first):
