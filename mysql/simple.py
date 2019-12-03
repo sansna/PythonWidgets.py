@@ -19,3 +19,6 @@ def sql_do():
 
     # do update
     result = conn.execute("update my_test set col1=100 where id=1;")
+
+    # Upsert, update col1 should be included into db(col1)
+    r = conn.execute("insert into my_test(id, col1) values (4,100) on duplicate key update col1=100;")
