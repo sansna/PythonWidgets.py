@@ -20,3 +20,6 @@ print c
 ts = 1172969203
 d = datetime.datetime.fromtimestamp(ts)
 print d.year, d.month, d.day
+
+# weekday
+print d.weekday()
