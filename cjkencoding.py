@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+# Note: this file is using python2, not python3
 # This can only be printed on screen, but not into file.
 #a='\u7537' # a is of type string
 #print a.decode('unicode-escape')
