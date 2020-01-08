@@ -18,6 +18,11 @@ a=u'\u7537' # a is of type unicode
 a=a.encode('utf-8')
 print a
 
+# Print with format
+a=u'\u7537' # a is of type unicode
+print u"{0}".format(a)  # print in unicode way
+print "{0}".format(a.encode("utf-8")) # print in str way
+
 # Use this to redirect stdout to file.
 a=u'\u7537' # a is of type unicode
 import sys
