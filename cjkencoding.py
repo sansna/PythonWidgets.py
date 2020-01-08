@@ -1,5 +1,10 @@
 # -*- coding: UTF-8 -*-
 # Note: this file is using python2, not python3
+
+# Most important info from https://pythonhosted.org/kitchen/unicode-frustrations.html:
+#+ unicodes are python formatted, str type is I/O oriented. Thus, type unicode cannot
+#+ be redirected to files, only str type can be redirected to I/O devices(file etc.).
+
 # This can only be printed on screen, but not into file.
 #a='\u7537' # a is of type string
 #print a.decode('unicode-escape')
@@ -19,9 +24,9 @@ a=u'\u7537' # a is of type unicode
 a=a.encode('utf-8')
 print a
 
-# Print with format
+# Print with format, can be printed screen/file.
 a=u'\u7537' # a is of type unicode
-print u"{0}".format(a)  # print in unicode way
+#print u"{0}".format(a)  # print in unicode way, this cannot be printed to file
 print "{0}".format(a.encode("utf-8")) # print in str way
 
 # Use this to redirect stdout to file.
