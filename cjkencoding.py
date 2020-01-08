@@ -30,6 +30,7 @@ a=u'\u7537' # a is of type unicode
 print "{0}".format(a.encode("utf-8")) # print in str way
 
 # Use this to redirect stdout to file.
+# Note: after following process, stdout only accept unicode output, str typed output will panic the program.
 a=u'\u7537' # a is of type unicode
 import sys
 import codecs
