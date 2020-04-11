@@ -15,10 +15,10 @@ s = requests.Session()
 
 # Wrap function for async process.
 def fun():
-    #url = "http://127.0.0.1:5000"
-    #return s.get(url)
-    url = "http://api.iupvideo.net/config/get"
-    return s.post(url, "", {})
+    url = "http://127.0.0.1:5000"
+    return s.get(url)
+    #url = "http://api.iupvideo.net/config/get"
+    #return s.post(url, "", {})
 
 
 # Running async with executors/None
@@ -35,8 +35,15 @@ async def run():
         )
         for i in range(0, 31)
     ]
-    # Running 31 in concurrent, then next 31 in concurrent
-    res = await asyncio.gather(*futures, *futures)
+    futures2 = [
+        loop.run_in_executor(
+            None,
+            fun
+        )
+        for i in range(0, 31)
+    ]
+    # Running all 62 procs in concurrent
+    res = await asyncio.gather(*futures, *futures2)
 
     #print([ str(i.content)+"\n" for i in res ])
     print(len(res))
