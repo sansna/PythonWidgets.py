@@ -154,7 +154,7 @@ def DoApi(ns, method, path, json):
             return ret, None
 
 
-def DoApiMod(ns, method, path, json, pattern):
+def DoApiMod(ns, path, json={}, pattern='', method=METHOD_POST):
     """
     Wraps DoApi, cut content as pattern in jq
     """
@@ -178,7 +178,7 @@ def main():
     path = "config/get"
     json = {}
 
-    content = DoApiMod(ns, method, path, json,
+    content = DoApiMod(ns, path, json,
                        '.data.config|.partner_tid, .phantom_tid')
     print content
 
