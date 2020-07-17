@@ -27,7 +27,7 @@ def DAY(ts):
 
 kafka_hosts = ["localhost:9092"]
 kafka_group = "group_test"
-kafka_topic = "multipart"
+kafka_topic = "new_topic"
 def main():
     cons = kc(bootstrap_servers=kafka_hosts,group_id=kafka_group)
     cons.subscribe(kafka_topic)
