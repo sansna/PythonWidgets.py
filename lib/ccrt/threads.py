@@ -3,11 +3,12 @@
 # Author: user
 # Date  : 2020 Jul 17 11:01:36 PM
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath("../../"))
+import os
+import sys 
+sys.path.append(os.path.abspath("../"))
 import time
 import threading
+from et import et
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -41,11 +42,12 @@ def main():
     def run():
         time.sleep(1)
         print 1
-    st = time.time()
-    for i in xrange(1,10):
-        run()
-    et = time.time()
-    print et-st
+    @et
+    def x():
+        for i in xrange(1,10):
+            run()
+
+    x()
 
 if __name__ == "__main__":
     main()

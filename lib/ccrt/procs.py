@@ -3,11 +3,12 @@
 # Author: user
 # Date  : 2020 Jul 17 11:25:51 PM
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath("../../"))
+import os
+import sys 
+sys.path.append(os.path.abspath("../"))
 import time
 import multiprocessing
+from et import et
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -37,7 +38,17 @@ def ppyrun(f):
     return func_wrapper
 
 def main():
-    pass
+    @ppyrun
+    def run():
+        time.sleep(1)
+        print 1
+
+    @et
+    def x():
+        for i in xrange(1,10):
+            run()
+
+    x()
 
 if __name__ == "__main__":
     main()
