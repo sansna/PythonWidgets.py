@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # Author: user
-# Date  : 2020 Jul 17 11:01:36 PM
+# Date  : 2020 Jul 17 11:37:43 PM
 
 #import os
 #import sys 
 #sys.path.append(os.path.abspath("../../"))
 import time
-import threading
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -25,27 +24,26 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
-def tpyrun(f):
-    """
-    Using this decorator to thread simultaneously.
-    Writing file/db/cache should be locked.
-    """
+def et(f):
     def func_wrapper(*args, **kwargs):
-        t = threading.Thread(target=f,args=args, kwargs=kwargs)
-        t.start()
-        #t.join()
+        st = time.time()
+        ret = f(*args, **kwargs)
+        et = time.time()
+        print f.__name__,et-st
+        return ret
+    return func_wrapper
+
+def et2(f):
+    def func_wrapper(*args, **kwargs):
+        st = time.time()
+        ret, ret2 = f(*args, **kwargs)
+        et = time.time()
+        print f.__name__,et-st
+        return ret, ret2
     return func_wrapper
 
 def main():
-    @tpyrun
-    def run():
-        time.sleep(1)
-        print 1
-    st = time.time()
-    for i in xrange(1,10):
-        run()
-    et = time.time()
-    print et-st
+    pass
 
 if __name__ == "__main__":
     main()
