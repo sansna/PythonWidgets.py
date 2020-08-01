@@ -1,11 +1,18 @@
 # Basic config for logging module to use
-import time
 import os
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+import time
 from logging import *
 from logging.handlers import *
 
 # configs
 log_file_name = "test.log"
+from config.base import App, Env, Configured
+if len(App) > 0 and len(Env) > 0 and Configured:
+    log_file_name = App+"_"+Env+".log"
+
+print log_file_name
 # https://docs.python.org/2/library/logging.handlers.html#timedrotatingfilehandler
 when = "midnight"
 intval = 1

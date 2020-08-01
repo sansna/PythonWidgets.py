@@ -40,6 +40,7 @@ def safe_run_wrap(func):
     @functools.wraps(func)
     def func_wrapper(*args, **kwargs):
         try:
+            logger.debug("safe_run_wrap.%s: args: %s, kwargs: %s"%(func.__name__, args, kwargs))
             return func(*args, **kwargs)
         except Exception as e:
             st = stack()

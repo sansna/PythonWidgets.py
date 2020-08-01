@@ -6,11 +6,24 @@
 import os
 import sys 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+# App Config
+# XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
+if __name__ == "__main__":
+    import config.base
+    if not config.base.Configured:
+        config.base.Configured = True
+        config.base.App = "web_server"
+        config.base.Env = "production"
+
 import time
 from lib.decorator.safe_run import safe_run_wrap
+import logging
+from lib.lg import logger
 
 from flask import Flask
 from flask import request
+import socket
 app = Flask(__name__)
 
 now = int(time.time())
@@ -29,7 +42,6 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
-@safe_run_wrap
 def AddPath(path, f, methods=["POST"]):
     if len(path) == 0:
         return
@@ -37,9 +49,9 @@ def AddPath(path, f, methods=["POST"]):
         path = "/"+path
 
     @app.route(path, methods=methods)
-    @safe_run_wrap
     def run():
         ret = f(request.get_json(force=True))
+        logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
         return ret
 
 @safe_run_wrap
@@ -65,6 +77,8 @@ def add_path(*args, **kwargs):
 def Run(port=8888):
     if type(port) != int:
         return
+    log = logging.getLogger("werkzeug")
+    log.disabled = True
     app.run(port=port)
 
 def main():
