@@ -7,6 +7,12 @@
 #import sys 
 #sys.path.append(os.path.abspath("../../"))
 import time
+#from lib.lg import *
+import functools
+import logging
+from inspect import stack
+
+logging.basicConfig(filename="test.log", level=logging.INFO, format='%(asctime)s: %(levelname)s: %(filename)s:%(lineno)d: %(funcName)s: %(message)s')
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -33,7 +39,23 @@ def safe_run(func):
             return None
     return func_wrapper
 
-@safe_run
+def safe_run_wrap(func):
+    @functools.wraps(func)
+    def func_wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            st = stack()
+            if len(st) > 1:
+                st = st[1:]
+            ret_stack = []
+            for s in st:
+                ret_stack.append(s[1:])
+            logging.error("in func: %s, err: %s, stack: %s"%(func.__name__, e, ret_stack))
+            return None
+    return func_wrapper
+
+@safe_run_wrap
 def main():
     print 1/0
 

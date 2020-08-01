@@ -3,11 +3,12 @@
 # Author: sansna
 # Date  : 2020 Aug 01 16:27:39
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath("../../"))
+import os
+import sys
+sys.path.append(os.path.abspath("../../"))
 import time
 import mysql.connector as mysql
+from decorator.safe_run import safe_run_wrap
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -25,9 +26,11 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+@safe_run_wrap
 def MySQLDB(host, user, port=3306, pw="", db=""):
     return mysql.connect(host=host, port=port, user=user, password=pw, database=db)
 
+@safe_run_wrap
 def MySQLRun(db, query):
     cursor = db.cursor()
     cursor.execute(query)
