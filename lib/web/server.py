@@ -62,7 +62,7 @@ def add_path(*args, **kwargs):
     return inner
 
 @safe_run_wrap
-def Run(port):
+def Run(port=8888):
     if type(port) != int:
         return
     app.run(port=port)
