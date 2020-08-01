@@ -24,8 +24,12 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+ENV_PRODUCTION = "production"
+ENV_QA = "qa"
+ENV_TEST = "test"
+
 Configured = False
-Env = "production"
+Env = ENV_PRODUCTION
 App = "myapp"
 
 def main():

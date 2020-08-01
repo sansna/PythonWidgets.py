@@ -14,7 +14,7 @@ if __name__ == "__main__":
     if not config.base.Configured:
         config.base.Configured = True
         config.base.App = "web_server"
-        config.base.Env = "production"
+        config.base.Env = config.base.ENV_PRODUCTION
 
 import time
 from lib.decorator.safe_run import safe_run_wrap
