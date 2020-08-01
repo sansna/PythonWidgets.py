@@ -4,7 +4,13 @@ import os
 from logging import *
 from logging.handlers import *
 
+# configs
 log_file_name = "test.log"
+# https://docs.python.org/2/library/logging.handlers.html#timedrotatingfilehandler
+when = "midnight"
+intval = 1
+maxbytes = 1024*1024*1024
+backcount = 1000
 
 class EnhancedRotatingFileHandler(TimedRotatingFileHandler):
     def __init__(self, filename, when='h', interval=1, backupCount=0, encoding=None, delay=0, utc=0, maxBytes=0):
@@ -114,7 +120,7 @@ class EnhancedRotatingFileHandler(TimedRotatingFileHandler):
         return result
 
 # NOTE: configure log file based on day, size 1G.
-thandler = EnhancedRotatingFileHandler(log_file_name, when="midnight", interval=1, backupCount=1000,maxBytes=1024*1024*1024)
+thandler = EnhancedRotatingFileHandler(log_file_name, when=when, interval=intval, backupCount=backcount,maxBytes=maxbytes)
 thandler.suffix = "%Y-%m-%d_%H:%M:%S"
 
 def ConfigLogger(logger):
