@@ -15,7 +15,7 @@ if len(App) > 0 and len(Env) > 0 and Configured:
     if Env == ENV_PRODUCTION:
         log_level = INFO
 
-print log_file_name
+print(log_file_name)
 # https://docs.python.org/2/library/logging.handlers.html#timedrotatingfilehandler
 when = "midnight"
 intval = 1

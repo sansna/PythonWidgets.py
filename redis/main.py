@@ -5,9 +5,7 @@ import sys
 import json
 import signal
 import redis
-from lib.lg import GetLogger
-
-logger = GetLogger()
+from lib.lg import logger
 
 #log.basicConfig(filename="log.txt", format="%(asctime)s: %(filename)s:%(lineno)s: %(funcName)s %(levelname)s: %(message)s", level=log.INFO)
 
