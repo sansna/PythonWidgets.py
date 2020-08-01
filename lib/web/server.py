@@ -13,7 +13,7 @@ if __name__ == "__main__":
     import config.base
     if not config.base.Configured:
         config.base.Configured = True
-        config.base.App = "web_server"
+        config.base.App = "lib/web/server"
         config.base.Env = config.base.ENV_PRODUCTION
         #config.base.Env = config.base.ENV_TEST
 
