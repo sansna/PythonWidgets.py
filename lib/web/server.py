@@ -15,6 +15,7 @@ if __name__ == "__main__":
         config.base.Configured = True
         config.base.App = "web_server"
         config.base.Env = config.base.ENV_PRODUCTION
+        #config.base.Env = config.base.ENV_TEST
 
 import time
 from lib.decorator.safe_run import safe_run_wrap
@@ -90,6 +91,8 @@ def main():
             mid=json["mid"]
         if mid == 1:
             json["zz"] = 10
+        if mid == -1:
+            raise KeyError
         return json
     #AddPath("hello", func1)
 

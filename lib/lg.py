@@ -8,9 +8,12 @@ from logging.handlers import *
 
 # configs
 log_file_name = "test.log"
-from config.base import App, Env, Configured
+log_level = DEBUG
+from config.base import App, Env, Configured, ENV_PRODUCTION
 if len(App) > 0 and len(Env) > 0 and Configured:
     log_file_name = App+"_"+Env+".log"
+    if Env == ENV_PRODUCTION:
+        log_level = INFO
 
 print log_file_name
 # https://docs.python.org/2/library/logging.handlers.html#timedrotatingfilehandler
@@ -133,7 +136,7 @@ thandler.suffix = "%Y-%m-%d_%H:%M:%S"
 def ConfigLogger(logger):
     logger.addHandler(thandler)
 
-basicConfig(filename=log_file_name, level=INFO, format='%(asctime)s: %(levelname)s: %(filename)s:%(lineno)d: %(funcName)s: %(message)s', handlers=[thandler])
+basicConfig(filename=log_file_name, level=log_level, format='%(asctime)s: %(levelname)s: %(filename)s:%(lineno)d: %(funcName)s: %(message)s', handlers=[thandler])
 logger = getLogger(log_file_name)
 # Using any handler may result in undesired behavior(lost basic config like filename,funcname, etc)
 #ConfigLogger(logger)
