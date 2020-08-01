@@ -42,7 +42,13 @@ def writexls(df, filename):
     df.to_excel(writer, 'page1', float_format='%.5f')
     writer.save()
 
-def WritexlsWrap(table, names, filename):
+def WritexlsWrap(table, names, filename="%d.xlsx"%today):
+    """
+    table = []
+    table.append([1,2,3])
+    table.append([4,5,6])
+    names = ['mid','uid','score']
+    """
     writexls(todataframe(table, names), filename)
 
 def main():
@@ -51,8 +57,8 @@ def main():
             [1, 300],
             [2, 100]
             ]
-    filename = "out.xlsx"
-    WritexlsWrap(table, names, filename)
+    #filename = "out.xlsx"
+    WritexlsWrap(table, names)
 
 if __name__ == "__main__":
     main()
