@@ -25,17 +25,17 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
-def DB(host, user, pw="", db=""):
-    return mysql.connect(host=host, user=user, password=pw, database=db)
+def MySQLDB(host, user, port=3306, pw="", db=""):
+    return mysql.connect(host=host, port=port, user=user, password=pw, database=db)
 
-def Run(db, query):
+def MySQLRun(db, query):
     cursor = db.cursor()
     cursor.execute(query)
     return cursor.fetchall()
 
 def main():
-    db=DB(host="172.20.82.5:3306", user="live", pw="szUWa@szUAIgG2g", db="account")
-    print (Run(db, "select * from account;"))
+    db=MySQLDB(host="172.20.82.5", user="live", pw="", db="account")
+    print (MySQLRun(db, "select * from account;"))
 
 if __name__ == "__main__":
     main()
