@@ -127,15 +127,16 @@ class EnhancedRotatingFileHandler(TimedRotatingFileHandler):
         return result
 
 # NOTE: configure log file based on day, size 1G.
-thandler = EnhancedRotatingFileHandler(log_file_name, when=when, interval=intval, backupCount=backcount,maxBytes=maxbytes)
+thandler = EnhancedRotatingFileHandler(log_file_name, when=when, interval=intval, backupCount=backcount, maxBytes=maxbytes)
 thandler.suffix = "%Y-%m-%d_%H:%M:%S"
 
 def ConfigLogger(logger):
     logger.addHandler(thandler)
 
 basicConfig(filename=log_file_name, level=INFO, format='%(asctime)s: %(levelname)s: %(filename)s:%(lineno)d: %(funcName)s: %(message)s', handlers=[thandler])
-logger = getLogger()
-ConfigLogger(logger)
+logger = getLogger(log_file_name)
+# Using any handler may result in undesired behavior(lost basic config like filename,funcname, etc)
+#ConfigLogger(logger)
 
 def main():
     logger.info("ok")
