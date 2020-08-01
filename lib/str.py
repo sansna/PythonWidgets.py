@@ -5,7 +5,7 @@
 
 #import os
 #import sys 
-#sys.path.append(os.path.abspath("../../"))
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
 import datetime
 
@@ -30,6 +30,7 @@ def TsToStr(ts,typ=0):
     typ=0: ymd h:m:s
     typ=1: ymd
     typ=2: h:m:s
+    typ=3: ymd_h:m:s
     """
     out = ""
     if typ == 0:
@@ -38,6 +39,8 @@ def TsToStr(ts,typ=0):
         out = time.strftime("%Y%m%d", time.localtime(ts))
     elif typ == 2:
         out = time.strftime("%H:%M:%S", time.localtime(ts))
+    elif typ == 3:
+        out = time.strftime("%Y%m%d_%H:%M:%S", time.localtime(ts))
     return out
 
 def YMDToTs(y, m, d):

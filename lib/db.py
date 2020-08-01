@@ -5,7 +5,7 @@
 
 import os
 import sys
-sys.path.append(os.path.abspath("../../"))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
 import mysql.connector as mysql
 from decorator.safe_run import safe_run_wrap

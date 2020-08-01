@@ -3,11 +3,13 @@
 # Author: sansna
 # Date  : 2020 Jul 31 16:15:03
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath("../../"))
+import os
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import pandas as pd
+from lib.decorator.safe_run import safe_run_wrap
+from lib.str import TsToStr
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -25,24 +27,28 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+@safe_run_wrap
 def listtodict(l, names):
     dic = {}
     for i in xrange(0, len(names)):
         dic.update({names[i]:l[i]})
     return dic
 
+@safe_run_wrap
 def todataframe(table, names):
     l = []
     for a in table:
         l.append(listtodict(a, names))
     return pd.DataFrame(l)
 
+@safe_run_wrap
 def writexls(df, filename):
     writer = pd.ExcelWriter(filename)
     df.to_excel(writer, 'page1', float_format='%.5f')
     writer.save()
 
-def WritexlsWrap(table, names, filename="%d.xlsx"%today):
+@safe_run_wrap
+def WritexlsWrap(table, names, filename="%s.xlsx"%TsToStr(today, 1)):
     """
     table = []
     table.append([1,2,3])

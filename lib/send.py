@@ -3,11 +3,12 @@
 # Author: sansna
 # Date  : 2020 Aug 01 17:32:31
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath("../../"))
+import os
+import sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import time
 import yagmail as yg
+from lib.decorator.safe_run import safe_run_wrap
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -25,11 +26,13 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+@safe_run_wrap
 def InitUser():
     # QQ mail example
     a=yg.SMTP(user='',password='',host='smtp.exmail.qq.com')
     return a
 
+@safe_run_wrap
 def SendAsUser(obj,to,sub,att):
     """
     obj: user, from obj = InitUser()
