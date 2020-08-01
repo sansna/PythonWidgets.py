@@ -43,6 +43,25 @@ def AddPath(path, f, methods=["POST"]):
         return ret
 
 @safe_run_wrap
+def add_path(*args, **kwargs):
+    """
+    decorator of adding path for a function
+    Usage:
+    @add_path("path", methods=["POST","GET"])
+    def func():
+        print "ok"
+    """
+    path = args[0]
+    if "methods" in kwargs:
+        methods = kwargs["methods"]
+    else:
+        methods = ["POST"]
+    def inner(func):
+        AddPath(path, func, methods=methods)
+        return func
+    return inner
+
+@safe_run_wrap
 def Run(port):
     if type(port) != int:
         return
@@ -50,6 +69,7 @@ def Run(port):
 
 def main():
 
+    @add_path("hello")
     def func1(json):
         mid = 0
         if "mid" in json:
@@ -57,7 +77,7 @@ def main():
         if mid == 1:
             json["zz"] = 10
         return json
-    AddPath("hello", func1)
+    #AddPath("hello", func1)
 
     Run(8080)
 

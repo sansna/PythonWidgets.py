@@ -33,7 +33,7 @@ def main():
         print(type(args))
     def func1(**kwargs):
         """
-        func(a=1,b=2): kwargs={a:1,b:2}
+        func("a"=1,"b"=2): kwargs={"a":1,"b":2}
         """
         # dic
         print(type(kwargs))
