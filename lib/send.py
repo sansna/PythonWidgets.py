@@ -35,12 +35,13 @@ def SendAsUser(obj,to,sub,att):
     obj: user, from obj = InitUser()
     to: "mail"
     sub: "My sub"
-    att: ["file1", "file2"]
+    att: ["file1", "file2"], some server may check total size/ file numbers
     """
     obj.send(to, subject=sub, attachments=att)
 
 def main():
-    pass
+    user = InitUser()
+    SendAsUser(user, "1@qq.com", "Hello world!", ["file.txt"])
 
 if __name__ == "__main__":
     main()

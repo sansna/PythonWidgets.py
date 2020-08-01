@@ -52,6 +52,26 @@ def GetWeekday(ts):
     d = datetime.datetime.fromtimestamp(ts)
     return d.weekday()+1
 
+def ToStr(thing):
+    if type(thing) is str:
+        return thing
+    elif type(thing) is unicode:
+        return thing.encode("utf-8")
+    elif type(thing) is int:
+        return str(thing)
+    elif type(thing) is float:
+        return str(thing)
+
+def ToUnicode(thing):
+    if type(thing) is unicode:
+        return thing
+    elif type(thing) is str:
+        return unicode(thing, "utf-8")
+    elif type(thing) is int:
+        return unicode(thing)
+    elif type(thing) is float:
+        return unicode(thing)
+
 def main():
     pass
 
