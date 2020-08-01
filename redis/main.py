@@ -1,10 +1,15 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import sys
 import json
 import signal
 import redis
-import logging as log
+from lib.lg import GetLogger
 
-log.basicConfig(filename="log.txt", format="%(asctime)s: %(filename)s:%(lineno)s: %(funcName)s %(levelname)s: %(message)s", level=log.INFO)
+logger = GetLogger()
+
+#log.basicConfig(filename="log.txt", format="%(asctime)s: %(filename)s:%(lineno)s: %(funcName)s %(levelname)s: %(message)s", level=log.INFO)
 
 #def sigterm_handler(_signo, _stack_frame):
 #    sys.exit(0)
@@ -19,7 +24,7 @@ def main():
             ret=c.brpop("wwoww", timeout=0)
             print(str(ret[1]))
         except Exception as e:
-            log.info("%s"%e)
+            logger.info("%s"%e)
 
 if __name__ == "__main__":
     main()

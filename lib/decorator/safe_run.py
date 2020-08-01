@@ -3,16 +3,13 @@
 # Author: user
 # Date  : 2020 Jul 17 10:30:01 PM
 
-#import os
-#import sys 
-#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
-#from lib.lg import *
 import functools
-import logging
 from inspect import stack
-
-logging.basicConfig(filename="test.log", level=logging.INFO, format='%(asctime)s: %(levelname)s: %(filename)s:%(lineno)d: %(funcName)s: %(message)s')
+from lib.lg import logger
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -51,7 +48,7 @@ def safe_run_wrap(func):
             ret_stack = []
             for s in st:
                 ret_stack.append(s[1:])
-            logging.error("in func: %s, err: %s, stack: %s"%(func.__name__, e, ret_stack))
+            logger.error("in func: %s, err: %s, stack: %s"%(func.__name__, e, ret_stack))
             return None
     return func_wrapper
 
