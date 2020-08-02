@@ -27,6 +27,7 @@ def DAY(ts):
 def CslReg(csl, name, host, port, check=None):
     while True:
         try:
+            # https://www.consul.io/api-docs/agent/check
             if check is None:
                 ck = consul.Check.tcp(host,port,"1s",timeout="10s")
             else:
