@@ -28,7 +28,7 @@ def CslReg(csl, name, host, port, check=None):
     while True:
         try:
             if check is None:
-                ck = consul.Check.tcp(host,port,5,timeout=10)
+                ck = consul.Check.tcp(host,port,"1s",timeout="10s")
             else:
                 ck = check
             csl.agent.service.register(name, address=host, port=port, check=ck)
