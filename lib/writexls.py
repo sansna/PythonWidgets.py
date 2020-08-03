@@ -38,6 +38,12 @@ def listtodict(l, names):
 def todataframe(table, names):
     l = []
     for a in table:
+        if type(a) is list:
+            pass
+        elif type(a) is tuple:
+            a = list(a)
+        else:
+            continue
         l.append(listtodict(a, names))
     return pd.DataFrame(l)
 
@@ -45,6 +51,13 @@ def todataframe(table, names):
 def writexls(df, filename):
     writer = pd.ExcelWriter(filename)
     df.to_excel(writer, 'page1', float_format='%.5f')
+    writer.save()
+
+@safe_run_wrap
+def mwritexls(dfsdict, filename):
+    writer = pd.ExcelWriter(filename)
+    for page, df in dfsdict.items():
+        df.to_excel(writer, page, float_format='%.5f')
     writer.save()
 
 @safe_run_wrap
