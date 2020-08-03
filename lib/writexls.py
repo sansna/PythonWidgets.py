@@ -45,7 +45,9 @@ def todataframe(table, names):
         else:
             continue
         l.append(listtodict(a, names))
-    return pd.DataFrame(l)
+    data = pd.DataFrame(l)
+    data.reindex(columns=names)
+    return data
 
 @safe_run_wrap
 def writexls(df, filename):
