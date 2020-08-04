@@ -35,7 +35,7 @@ def listtodict(l, names):
     return dic
 
 @safe_run_wrap
-def todataframe(table, names):
+def todataframe(table, names, reorder_names=None):
     l = []
     for a in table:
         if type(a) is list:
@@ -47,11 +47,13 @@ def todataframe(table, names):
         l.append(listtodict(a, names))
     data = pd.DataFrame(l)
     # ReOrder
-    data = data[names]
+    if reorder_names is None:
+        reorder_names = names
+    data = data[reorder_names]
     return data
 
 @safe_run_wrap
-def FormPage(table, names, page_name):
+def FormPage(table, names, page_name, reorder_names=None):
     """
     table: list of (list of values), representing table
     names: columns, with order, w.r.t. table order
@@ -68,7 +70,9 @@ def FormPage(table, names, page_name):
         l.append(listtodict(a, names))
     data = pd.DataFrame(l)
     # ReOrder
-    data = data[names]
+    if reorder_names is None:
+        reorder_names = names
+    data = data[reorder_names]
     return {"page": page_name, "data": data}
 
 @safe_run_wrap
@@ -85,14 +89,14 @@ def mwritexls(dfsdict, filename):
     writer.save()
 
 @safe_run_wrap
-def WritexlsWrap(table, names, filename="%s.xlsx"%TsToStr(today, 1)):
+def WritexlsWrap(table, names, filename="%s.xlsx"%TsToStr(today, 1), reorder_names=None):
     """
     table = []
     table.append([1,2,3])
     table.append([4,5,6])
     names = ['mid','uid','score']
     """
-    writexls(todataframe(table, names), filename)
+    writexls(todataframe(table, names, reorder_names), filename)
 
 @safe_run_wrap
 def WritePagesWrap(pages_info, filename="%s.xlsx"%TsToStr(today, 1)):
@@ -116,11 +120,11 @@ def main():
             [2, 100, 13]
             ]
     #filename = "out.xlsx"
-    WritexlsWrap(table, names)
+    WritexlsWrap(table, names, reorder_names=['可是独家发售', 'klasdfj', '开心'])
 
     # 多页写入,有序
     pages = []
-    pages.append(FormPage(table, names, "WOW"))
+    pages.append(FormPage(table, names, "WOW", ['可是独家发售', 'klasdfj', '开心']))
     pages.append(FormPage(table, names, "那时的发送地方"))
     pages.append(FormPage(table, names, "ZZZ"))
     WritePagesWrap(pages, "pages.xlsx")
