@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import pandas as pd
 from lib.decorator.safe_run import safe_run_wrap
-from lib.str import TsToStr
+from lib.str import TsToStr, ToUnicode
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -46,8 +46,30 @@ def todataframe(table, names):
             continue
         l.append(listtodict(a, names))
     data = pd.DataFrame(l)
-    data.reindex(columns=names)
+    # ReOrder
+    data = data[names]
     return data
+
+@safe_run_wrap
+def FormPage(table, names, page_name):
+    """
+    table: list of (list of values), representing table
+    names: columns, with order, w.r.t. table order
+    page_name: write to which sheet in excel
+    """
+    l = []
+    for a in table:
+        if type(a) is list:
+            pass
+        elif type(a) is tuple:
+            a = list(a)
+        else:
+            continue
+        l.append(listtodict(a, names))
+    data = pd.DataFrame(l)
+    # ReOrder
+    data = data[names]
+    return {"page": page_name, "data": data}
 
 @safe_run_wrap
 def writexls(df, filename):
@@ -72,14 +94,36 @@ def WritexlsWrap(table, names, filename="%s.xlsx"%TsToStr(today, 1)):
     """
     writexls(todataframe(table, names), filename)
 
+@safe_run_wrap
+def WritePagesWrap(pages_info, filename="%s.xlsx"%TsToStr(today, 1)):
+    """
+    pages_info: generated structure list using *FormPage* return items
+    filename: file to write
+    """
+    writer = pd.ExcelWriter(filename)
+    for i in xrange(0, len(pages_info)):
+        page_info = pages_info[i]
+        page_name = ToUnicode(page_info["page"])
+        page_data = page_info["data"]
+        page_data.to_excel(writer, page_name, float_format="%.5f")
+    writer.save()
+
 def main():
-    names = ['mid', 'score']
+    # 单页写入
+    names = ['开心', 'klasdfj', '可是独家发售']
     table = [
-            [1, 300],
-            [2, 100]
+            [1, 300, 27],
+            [2, 100, 13]
             ]
     #filename = "out.xlsx"
     WritexlsWrap(table, names)
+
+    # 多页写入,有序
+    pages = []
+    pages.append(FormPage(table, names, "WOW"))
+    pages.append(FormPage(table, names, "那时的发送地方"))
+    pages.append(FormPage(table, names, "ZZZ"))
+    WritePagesWrap(pages, "pages.xlsx")
 
 if __name__ == "__main__":
     main()
