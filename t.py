@@ -27,10 +27,12 @@ print d.weekday()
 # change between unixtimestamp & iso8601 format: 2006-01-02T15:04:05Z07:00
 ## To iso8601
 import pytz
+import datetime
 tz = pytz.timezone('Asia/Shanghai')
 print datetime.datetime.fromtimestamp(1600334632, tz).isoformat()
 
 ## To Unix timestamp
+import time
 import iso8601
 ts = int(time.mktime(iso8601.parse_date('2020-09-17T17:23:52+08:00').timetuple()))
 print ts
