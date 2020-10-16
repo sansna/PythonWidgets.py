@@ -51,8 +51,12 @@ def AddPath(path, f, methods=["POST"]):
 
     @app.route(path, methods=methods)
     def run():
-        ret = f(request.get_json(force=True))
-        logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
+        if request.method == 'POST':
+            ret = f(request.get_json(force=True))
+            logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
+        elif:
+            ret = f(1)
+            logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods))
         return ret
 
 @safe_run_wrap
@@ -61,7 +65,7 @@ def add_path(*args, **kwargs):
     decorator of adding path for a function
     Usage:
     @add_path("path", methods=["POST","GET"])
-    def func():
+    def func(json):
         print "ok"
     """
     path = args[0]
@@ -80,7 +84,7 @@ def Run(port=8888):
         return
     log = logging.getLogger("werkzeug")
     log.disabled = True
-    app.run(port=port)
+    app.run(host="0.0.0.0", port=port)
 
 def main():
 
