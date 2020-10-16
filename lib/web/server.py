@@ -56,7 +56,7 @@ def AddPath(path, f, methods=["POST"]):
             logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
         elif request.method == 'GET':
             ret = f(1)
-            logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods))
+            logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods))
         return ret
 
 @safe_run_wrap
