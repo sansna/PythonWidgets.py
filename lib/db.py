@@ -31,14 +31,52 @@ def MySQLDB(host, user, port=3306, pw="", db=""):
     return mysql.connect(host=host, port=port, user=user, password=pw, database=db)
 
 @safe_run_wrap
+def MySQLDBv2(dic):
+    host = dic.get('host')
+    user = dic.get('user')
+    port = dic.get('port', 3306)
+    pw = dic.get('pw', "")
+    db = dic.get('database', "")
+    cnx = mysql.connect(host=host, port=port, user=user, password=pw, database=db)
+    dic.update({"cnx": cnx})
+    return dic
+
+@safe_run_wrap
 def MySQLRun(db, query):
-    cursor = db.cursor()
+    if type(db) is dict:
+        # This mode enables reconnect while timeout
+        # {cnx: conn, host: x, port: x, user: x, pw: x, database: x}
+        host = db["host"]
+        port = db.get("port", 3306)
+        user = db["user"]
+        pw = db.get('pw', "")
+        database = db["database"]
+        cnx = db.get("cnx", MySQLDB(host, user, port, pw, database))
+        if "cnx" not in db:
+            db["cnx"] = cnx
+        try:
+            cnx.ping(reconnect=True, attempts=3, delay=5)
+        except:
+            cnx = MySQLDB(host, user, port, pw, database)
+            db["cnx"] = cnx
+        conn = cnx
+    elif type(db) is mysql.connection_cext.CMySQLConnection:
+        # one time run
+        conn = db
+    # start run
+    cursor = conn.cursor()
     cursor.execute(query)
     return cursor.fetchall()
 
 def main():
+    # One time run scripts, a bit simple to maintain.
     db=MySQLDB(host="172.20.82.5", user="live", pw="", db="account")
-    print (MySQLRun(db, "select * from account;"))
+    print (MySQLRun(db, "select * from account limit 1;"))
+
+    # Using this method makes it possible to reconnect when session times out
+    TDB_ACNT = {"host": "172.20.82.5", "user":"live", "pw": "", "database": "account"}
+    newdb = MySQLDBv2(TDB_ACNT)
+    print (MySQLRun(newdb, "select * from account limit 2;"))
 
 if __name__ == "__main__":
     main()
