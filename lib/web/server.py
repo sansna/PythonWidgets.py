@@ -6,6 +6,7 @@
 import os
 import sys 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+import re
 
 # App Config
 # XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
@@ -43,19 +44,28 @@ def YM(ts):
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+pathre = re.compile('[^a-zA-Z0-9]')
+
 def AddPath(path, f, methods=["POST"]):
     if len(path) == 0:
         return
     if path[0] != "/":
         path = "/"+path
 
-    @app.route(path, methods=methods)
-    def run():
+    fun = path+str(methods)
+    fun = pathre.sub('_', fun)
+
+    """
+    see https://stackoverflow.com/questions/17256602/assertionerror-view-function-mapping-is-overwriting-an-existing-endpoint-functi
+    for usage of @app.route
+    """
+    @app.route(path, methods=methods, endpoint=fun)
+    def run(*args, **kwargs):
         if request.method == 'POST':
-            ret = f(request.get_json(force=True))
+            ret = f(request.get_json(force=True), args, kwargs)
             logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
         elif request.method == 'GET':
-            ret = f(1)
+            ret = f(None, args, kwargs)
             logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods))
         return ret
 
@@ -99,6 +109,19 @@ def main():
             raise KeyError
         return json
     #AddPath("hello", func1)
+
+    """
+    curl -G 127.0.0.1:8080/xxx/123/xcv
+    """
+    @add_path("xxx/<idx>/<mmm>", methods=["GET"])
+    def func2(json, *args, **kwargs):
+        print json, args, kwargs
+        variable_dict = args[1]
+        # prints "123", unicode
+        print variable_dict["idx"]
+        # prints "xcv", unicode
+        print variable_dict["mmm"]
+        return {}
 
     Run(8080)
 
