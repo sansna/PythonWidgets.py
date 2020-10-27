@@ -63,6 +63,8 @@ def MySQLRun(db, query):
     elif type(db) is mysql.connection_cext.CMySQLConnection:
         # one time run
         conn = db
+    else:
+        return None
     # start run
     cursor = conn.cursor()
     cursor.execute(query)
