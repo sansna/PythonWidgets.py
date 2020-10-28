@@ -27,6 +27,8 @@ from flask import Flask
 from flask import request
 import socket
 app = Flask(__name__)
+# Enable UTF-8 support in resp of flask
+app.config['JSON_AS_ASCII'] = False
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600
@@ -121,7 +123,7 @@ def main():
         print variable_dict["idx"]
         # prints "xcv", unicode
         print variable_dict["mmm"]
-        return {}
+        return {"zz":"你户"}
 
     Run(8080)
 
