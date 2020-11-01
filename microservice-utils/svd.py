@@ -165,7 +165,7 @@ def DoApiMod(ns, path, json={}, pattern='', method=METHOD_POST):
         except:
             ret = None
         finally:
-            if type(ret) == list and len(ret) = 1 and (pattern.count('|') == 0 or pattern.count(',') == 0):
+            if type(ret) == list and len(ret) == 1 and (pattern.count('|') == 0 or pattern.count(',') == 0):
                 ret = ret[0]
             return ret
     else:
