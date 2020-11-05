@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import datetime
 from kafka import KafkaConsumer as kc
-from decorators.safe_run import safe_run_wrap
+from decorator.safe_run import safe_run_wrap
 
 # App Config
 # XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
