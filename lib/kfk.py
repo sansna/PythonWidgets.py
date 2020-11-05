@@ -57,6 +57,8 @@ def KfkCons(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_
 def main():
     for m in KfkCons("online_topic"):
         print m
+        # 消息data
+        print m.value
         break
 
 if __name__ == "__main__":
