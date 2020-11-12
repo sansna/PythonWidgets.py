@@ -80,11 +80,12 @@ def KfkGetTps(topic, parts=[0]):
     return [ TopicPartition(topic, i) for i in parts ]
 
 @safe_run_wrap
-def KfkAssign(tps, kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
+def KfkAssign(parts=[0], kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
     """
     消费指定topic下面的指定partitions
     tps: KfkGetTps() 返回值
     """
+    tps = KfkGetTps(kafka_topic, parts)
     cons = KfkConnect(kafka_topic=kafka_topic, kafka_hosts=kafka_hosts, kafka_group=kafka_group)
     cons.assign(tps)
     return cons
