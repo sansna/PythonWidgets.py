@@ -108,11 +108,30 @@ def KfkToLatest(cons, tps):
     cons.commit(dic)
 
 def main():
+    # 1 全量消费
     for m in KfkCons("online_topic"):
+        """
+        对所有topic下的partition全量消费
+        一般建议对kfk消息做合并处理,整个拉取kfk消息的流程保持在10-100us这个数量级
+        不然就容易造成消息堆积
+        一般的消息格式：
+        ConsumerRecord(topic=u'online_topic', partition=7, offset=375659436, timestamp=-1, timestamp_type=0, key='71754329', value='{"mid":71754329,"sid":"ce6b2671a14fcb42","time":1605207667205,"type":0}', checksum=None, serialized_key_size=8, serialized_value_size=71)
+        """
         print m
         # 消息data
         print m.value
         break
+    # 2 分区消费
+    for m in KfkAssign([0], kafka_topic="online_topic")
+        """
+        指定topic下的部分partition进行消费
+        实际上还是为了能保证消息时延足够短，能够消费完
+        """
+        print m.value
+        break
+    # 3 清空历史累积,注意cons必须通过KfkAssign()获取?
+    cons = KfkAssign([0], kafka_topic="online_topic")
+    KfkToLatest(cons, KfkGetTps("online_topic", [0]))
 
 if __name__ == "__main__":
     main()
