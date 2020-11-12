@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import datetime
-from kafka import KafkaConsumer as kc
+from kafka import KafkaConsumer as kc, TopicPartition, OffsetAndMetadata
 from decorator.safe_run import safe_run_wrap
 
 # App Config
@@ -49,10 +49,57 @@ def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
 @safe_run_wrap
+def KfkConnect(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
+    cons = kc(bootstrap_servers=kafka_hosts,group_id=kafka_group,max_poll_interval_ms=300000,max_poll_records=500)
+    return conn
+
+@safe_run_wrap
 def KfkCons(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
-    cons = kc(bootstrap_servers=kafka_hosts,group_id=kafka_group)
+    """
+    This wrap consumes too slow. And also does not choose its partitions of the same topic.
+    """
+    cons = KfkConnect(kafka_topic=kafka_topic, kafka_hosts=kafka_hosts, kafka_group=kafka_group)
     cons.subscribe(kafka_topic)
     return cons
+
+@safe_run_wrap
+def KfkPartitions(cons, topic):
+    """
+    生成指定topic的tps
+    returns list of partitions numbers
+    e.g. [ i for i in xrange(0,16) ]
+    """
+    return list(cons.partitions_for_topic(topic))
+
+@safe_run_wrap
+def KfkGetTps(topic, parts=[0]):
+    return [ TopicPartition(topic, i) for i in parts ]
+
+@safe_run_wrap
+def KfkAssign(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test", tps):
+    """
+    消费指定topic下面的指定partitions
+    """
+    cons = KfkConnect(kafka_topic=kafka_topic, kafka_hosts=kafka_hosts, kafka_group=kafka_group)
+    cons.assign(tps)
+    return cons
+
+@safe_run_wrap
+def GetLatestOffsets(cons, tps):
+    """
+    获取指定partitions的log offset map
+    in: [ TopicPartition(topic, part) ]
+    out: dict( tp: offset )
+    """
+    return cons.end_offsets(tps)
+
+@safe_run_wrap
+def KfkToLatest(cons, tps):
+    offsets = GetLatestOffsets(cons, tps)
+    dic = {}
+    for tp, offset in offsets.iteritems():
+        dic.update({tp:OffsetAndMetadata(offset,None)})
+    cons.commit(dic)
 
 def main():
     for m in KfkCons("online_topic"):
