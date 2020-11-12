@@ -51,7 +51,7 @@ def DAY(ts):
 @safe_run_wrap
 def KfkConnect(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
     cons = kc(bootstrap_servers=kafka_hosts,group_id=kafka_group,max_poll_interval_ms=300000,max_poll_records=500)
-    return conn
+    return cons
 
 @safe_run_wrap
 def KfkCons(kafka_topic="", kafka_hosts=["localhost:9092"], kafka_group="python_test"):
