@@ -28,3 +28,4 @@ ujson
 xlrd
 yagmail
 iso8601
+nltk
