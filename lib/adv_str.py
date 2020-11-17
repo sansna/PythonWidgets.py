@@ -53,9 +53,30 @@ def DAY(ts):
 def IsCJK(char):
     return is_cjk(ToUnicode(char))
 
+@safe_run_wrap
+def CutToNByWidth(s, N=4):
+    """
+    输入字符串和需要截取的宽度
+    输出截取后的字符串
+    """
+    out = ""
+    s = ToUnicode(s)
+    for i in s:
+        if IsCJK(i):
+            N -= 2
+        else:
+            N -= 1
+        if N < 0:
+            return out
+        out += i
+        if N == 0:
+            return out
+
+
 def main():
     print IsCJK("你")
     print IsCJK("h")
+    print CutToNByWidth("zx你会老师快递费")
 
 if __name__ == "__main__":
     main()
