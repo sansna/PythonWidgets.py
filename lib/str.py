@@ -78,6 +78,12 @@ def ToUnicode(thing):
     elif type(thing) is float:
         return unicode(thing)
 
+def GenHtml(out):
+    ret = ""
+    for o in out:
+        ret += "<p>"+o+"</p>"
+    return ret
+
 def main():
     pass
 
