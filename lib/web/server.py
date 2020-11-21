@@ -63,6 +63,9 @@ def AddPath(path, f, methods=["POST"]):
     """
     @app.route(path, methods=methods, endpoint=fun)
     def run(*args, **kwargs):
+        """
+        TODO: 针对同参数频繁请求，增加缓存
+        """
         if request.method == 'POST':
             ret = f(request.get_json(force=True), args, kwargs)
             logger.info("path: %s, hostname: %s, host: %s, raddr: %s, methods: %s, params: %s"%(path, socket.gethostname(), request.host, request.remote_addr, methods, request.get_json(force=True)))
