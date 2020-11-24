@@ -18,6 +18,7 @@ pykafka
 pymongo
 pymysql
 python-consul
+pytz
 redis-py
 requests
 scapy
@@ -28,4 +29,4 @@ ujson
 xlrd
 yagmail
 iso8601
-nltk
+nltk==3.4.5
