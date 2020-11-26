@@ -47,9 +47,59 @@ def TsToStr(ts,typ=0):
     return out
 
 def YMDToTs(y, m, d):
+    """
+    Output ts of 00:00:00 of specified day
+    """
     a = datetime.date(y,m,d)
     j = time.mktime(a.timetuple())
     return int(j)
+
+def NextYMTs(y, m, n=1):
+    """
+    Input: 2020, 12
+    Output: ts of 2021.01.01 0:0:0
+    """
+    a = YMDToTs(y, m, 1)
+    if n > 0:
+        while n > 0:
+            n -= 1
+            # no month has 32 days
+            a += dayts * 32
+            ym = YM(a)
+            y = int(ym[:4])
+            m = int(ym[4:])
+            a = YMDToTs(y, m, 1)
+        return a
+    elif n < 0:
+        while n < 0:
+            n += 1
+            a -= dayts
+            ym = YM(a)
+            y = int(ym[:4])
+            m = int(ym[4:])
+            a = YMDToTs(y, m, 1)
+    return a
+
+def GetDayTs(ts):
+    """
+    Get the timestamp of ts date's 00:00:00
+    """
+    ymd = YMD(ts)
+    y = int(ymd[:4])
+    m = int(ymd[4:6])
+    d = int(ymd[6:])
+    return YMDToTs(y, m, d)
+
+def GetNextWeekdayTs(ts, day):
+    """
+    Get the next specified weekday's timestamp
+    Input: ts, day means Monday == 1 ... Sunday == 7
+    """
+    wd = GetWeekday(ts)
+    needts = ((day + 7 - wd)%7)*dayts
+    if needts == 0:
+        needts = 7*dayts
+    return GetDayTs(ts) + needts
 
 def GetWeekday(ts):
     """
