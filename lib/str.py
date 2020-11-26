@@ -4,7 +4,7 @@
 # Date  : 2020 Aug 01 16:11:24
 
 #import os
-#import sys 
+#import sys
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
 import datetime
@@ -16,16 +16,20 @@ hourts = 3600
 mints = 60
 yesterday = today - dayts
 
+
 def YMD(ts):
     return time.strftime("%Y%m%d", time.localtime(ts))
+
 
 def YM(ts):
     return time.strftime("%Y%m", time.localtime(ts))
 
+
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
-def TsToStr(ts,typ=0):
+
+def TsToStr(ts, typ=0):
     """
     typ=0: ymd h:m:s
     typ=1: ymd
@@ -46,13 +50,15 @@ def TsToStr(ts,typ=0):
         out = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ts))
     return out
 
+
 def YMDToTs(y, m, d):
     """
     Output ts of 00:00:00 of specified day
     """
-    a = datetime.date(y,m,d)
+    a = datetime.date(y, m, d)
     j = time.mktime(a.timetuple())
     return int(j)
+
 
 def NextYMTs(y, m, n=1):
     """
@@ -80,6 +86,7 @@ def NextYMTs(y, m, n=1):
             a = YMDToTs(y, m, 1)
     return a
 
+
 def GetDayTs(ts):
     """
     Get the timestamp of ts date's 00:00:00
@@ -90,16 +97,18 @@ def GetDayTs(ts):
     d = int(ymd[6:])
     return YMDToTs(y, m, d)
 
+
 def GetNextWeekdayTs(ts, day):
     """
     Get the next specified weekday's timestamp
     Input: ts, day means Monday == 1 ... Sunday == 7
     """
     wd = GetWeekday(ts)
-    needts = ((day + 7 - wd)%7)*dayts
+    needts = ((day + 7 - wd) % 7)*dayts
     if needts == 0:
         needts = 7*dayts
     return GetDayTs(ts) + needts
+
 
 def GetWeekday(ts):
     """
@@ -107,6 +116,7 @@ def GetWeekday(ts):
     """
     d = datetime.datetime.fromtimestamp(ts)
     return d.weekday()+1
+
 
 def ToStr(thing):
     if type(thing) is str:
@@ -118,6 +128,7 @@ def ToStr(thing):
     elif type(thing) is float:
         return str(thing)
 
+
 def ToUnicode(thing):
     if type(thing) is unicode:
         return thing
@@ -128,15 +139,17 @@ def ToUnicode(thing):
     elif type(thing) is float:
         return unicode(thing)
 
+
 def GenHtml(out):
     ret = ""
     for o in out:
         ret += "<p>"+o+"</p>"
     return ret
 
+
 def main():
     pass
 
+
 if __name__ == "__main__":
     main()
-
