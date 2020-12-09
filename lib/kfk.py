@@ -122,7 +122,7 @@ def main():
         print m.value
         break
     # 2 分区消费
-    for m in KfkAssign([0], kafka_topic="online_topic")
+    for m in KfkAssign([0], kafka_topic="online_topic"):
         """
         指定topic下的部分partition进行消费
         实际上还是为了能保证消息时延足够短，能够消费完
