@@ -9,7 +9,7 @@
 import time
 import datetime
 from nltk.tokenize.util import is_cjk
-from str import ToUnicode
+from str import ToStr
 from decorator.safe_run import safe_run_wrap
 
 # App Config
@@ -51,7 +51,7 @@ def DAY(ts):
 
 @safe_run_wrap
 def IsCJK(char):
-    return is_cjk(ToUnicode(char))
+    return is_cjk(ToStr(char))
 
 @safe_run_wrap
 def CutToNByWidth(s, N=4):
@@ -60,7 +60,7 @@ def CutToNByWidth(s, N=4):
     输出截取后的字符串
     """
     out = ""
-    s = ToUnicode(s)
+    s = ToStr(s)
     for i in s:
         if IsCJK(i):
             N -= 2
@@ -74,9 +74,9 @@ def CutToNByWidth(s, N=4):
 
 
 def main():
-    print IsCJK("你")
-    print IsCJK("h")
-    print CutToNByWidth("zx你会老师快递费")
+    print (IsCJK("你"))
+    print (IsCJK("h"))
+    print (CutToNByWidth("zx你会老师快递费"))
 
 if __name__ == "__main__":
     main()
