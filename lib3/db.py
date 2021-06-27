@@ -5,10 +5,10 @@
 
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import mysql.connector as mysql
-from decorator.safe_run import safe_run_wrap
+from lib3.decorator.safe_run import safe_run_wrap
 
 now = int(time.time())
 today = int(now+8*3600)/86400*86400-8*3600

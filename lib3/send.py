@@ -27,9 +27,9 @@ def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
 @safe_run_wrap
-def InitUser():
+def InitUser(user, pw, host='smtp.exmail.qq.com'):
     # QQ mail example
-    a=yg.SMTP(user='',password='',host='smtp.exmail.qq.com')
+    a=yg.SMTP(user=user,password=pw,host=host)
     return a
 
 @safe_run_wrap
@@ -41,6 +41,13 @@ def SendAsUser(obj,to,sub,att):
     att: ["file1", "file2"], some server may check total size/ file numbers
     """
     obj.send(to, subject=sub, attachments=att)
+
+@safe_run_wrap
+def SendAsUserCont(obj, to, sub, cont, att):
+    """
+    cont: str. mail content
+    """
+    obj.send(to, subject=sub, attachments=att, contents=cont)
 
 def main():
     user = InitUser()
