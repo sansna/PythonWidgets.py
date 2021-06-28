@@ -9,7 +9,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"
 import time
 import datetime
 from lib3.db import *
-from lib3.send import *
+#from lib3.send import *
+from notify import SendSubjCont
 
 # App Config
 # XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
@@ -201,6 +202,5 @@ if __name__ == "__main__":
 
     subj = "fund_daily_analysis_insert_"+YMD2(now)
     cont = str(daily_inserted_count)
-    user = InitUser("1185280650@qq.com", '', 'smtp.qq.com')
-    SendAsUserCont(user, "1185280650@qq.com", subj, cont, [])
+    SendSubjCont(subj, cont)
 

@@ -8,10 +8,12 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
 import datetime
+from notify import SendSubjCont
 from lib3.web.client import Get
 from lib3.adv_str import JQProcess
 from lib3.str import ToStr
 from lib3.db import *
+#from lib3.send import SendAsUserCont, InitUser
 
 # App Config
 # XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
@@ -44,12 +46,18 @@ BeginOfLastYear = int(time.mktime(BeginOfLastYear.timetuple()))
 def YMD(ts):
     return time.strftime("%Y%m%d", time.localtime(ts))
 
+def YMD2(ts):
+    return time.strftime("%Y-%m-%d", time.localtime(ts))
+
 def YM(ts):
     return time.strftime("%Y%m", time.localtime(ts))
 
 def DAY(ts):
     return time.strftime("%d", time.localtime(ts))
 
+estimate_count = 0
+
+@safe_run_wrap
 def GetList(idx=1, psz=200):
     h = {}
     h.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"})
@@ -64,10 +72,12 @@ def GetList(idx=1, psz=200):
     ret = Get(url, {}, h)
     return JQProcess(ToStr(ret), ".Data.list[]|.gxrq, .bzdm, .gsz, .gszzl, .PLevel, .Discount, .Rate, .feature, .FType, .sgzt, .shzt, .IsExchg", lcut="(", rcut=")")
 
+@safe_run_wrap
 def main():
     idx = 1
     db = MySQLDB(host="172.17.0.2", user="root", port=3306, pw="", db="eastmoney")
     step = 10000
+    global estimate_count
     while True:
         val = GetList(idx, step)
         idx += 1
@@ -108,6 +118,7 @@ def main():
             insert into fund_fundestimate (fund_code, `date`, gsz, gszzl, plevel, discount, `rate`, `feature`, ftype, sgzt, shzt, is_exchg) values("{bzdm}", "{date}", {gsz}, {gszzl}, {plevel}, {discount}, {rate}, "{feature}", "{ftype}", "{sgzt}", "{shzt}", "{isexchg}");
             """.format(bzdm=bzdm, date=date, gsz=gsz, gszzl=gszzl, plevel=plevel, discount=discount, rate=rate, feature=feature, ftype=ftype, sgzt=sgzt, shzt=shzt, isexchg=isexchg)
             MySQLRun(db, insert_sql)
+            estimate_count += 1
         db.commit()
 
         # End of loop
@@ -116,4 +127,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+    subj = "fund_daily_estimate_"+YMD2(now)
+    cont = str(estimate_count)
+    SendSubjCont(subj, cont)
