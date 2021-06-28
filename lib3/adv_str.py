@@ -3,16 +3,16 @@
 # Author: sansna
 # Date  : 2020 Nov 17 08:40:34
 
-#import os
-#import sys
-#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 import time
 import datetime
 from nltk.tokenize.util import is_cjk
-from str import ToStr
+from lib3.str import ToStr
 import jq
 import ujson
-from decorator.safe_run import safe_run_wrap
+from lib3.decorator.safe_run import safe_run_wrap
 
 # App Config
 # XXX: https://stackoverflow.com/questions/3536620/how-to-change-a-module-variable-from-another-module
