@@ -127,6 +127,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
     subj = "fund_daily_estimate_"+YMD2(now)
     cont = str(estimate_count)
     SendSubjCont(subj, cont)
